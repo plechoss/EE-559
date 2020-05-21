@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class ConvNet(nn.Module):
-'''Basic convolutional neural network structure with 2 convolution layers and 3 fully connected layers. '''
+    '''Basic convolutional neural network structure with 2 convolution layers and 3 fully connected layers. '''
     def __init__(self, params):
         super(ConvNet, self).__init__()
 
