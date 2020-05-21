@@ -15,17 +15,18 @@ class ConvNet(nn.Module):
         self.fc3 = nn.Linear(20, 2)
 
     def forward(self, x, kernel_size=3):
-        # 2x14x14 -> 10x6x6
-        x = F.relu(F.max_pool2d(self.conv1(x),2,2))
-        # 10x6x6 -> 20x2x2
-        x = F.relu(F.max_pool2d(self.conv2(x),2,2))
-        # 20x2x2 -> num_hidden_1
-        #print(x.shape)
+        # 2x14x14 -> 20x6x6
+        x = self.conv1(x)
+        x = F.relu(F.max_pool2d(x,2,2))
+        # 20x6x6 -> 10x2x2
+        x = self.conv2(x)
+        x = F.relu(F.max_pool2d(x,2,2))
+        # 10x2x2 -> 40
         x = x.view(-1, 10 * 2 * 2)
 
-        # num_hidden_1 -> 50
+        # 40 -> num_hidden_1
         x = F.relu(self.fc1(x))
-        # 50 -> 20
+        # num_hidden_1 -> 20
         x = F.relu(self.fc2(x))
         # 20 -> 2
         x = t.sigmoid(self.fc3(x))
@@ -46,16 +47,17 @@ class ConvNetWeightSharing(nn.Module):
 
     def forward_helper(self, x):
         # 1x14x14 -> 20x6x6
-        x = F.relu(F.max_pool2d(self.conv1(x),2,2))
+        x = self.conv1(x)
+        x = F.relu(F.max_pool2d(x,2,2))
         # 20x6x6 -> 10x2x2
-        x = F.relu(F.max_pool2d(self.conv2(x),2,2))
-        # 10x2x2 -> num_hidden_1
+        x = self.conv2(x)
+        x = F.relu(F.max_pool2d(x,2,2))
+        # 10x2x2 -> 40
         x = x.view(-1, 10 * 2 * 2)
 
-        # num_hidden_1 -> 50
+        # 40 -> num_hidden_1
         x = F.relu(self.fc1(x))
-        # 50 -> 20
-        #x = F.relu(self.fc2(x))
+        # num_hidden_1 -> 20
         x = self.fc2(x)
         return x
 
