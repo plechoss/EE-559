@@ -9,6 +9,7 @@ nb_samples = 1000
 
 #training a model in batches
 def train_net(model, epochs, data_in, labels, classes, test_data_in, test_labels, test_classes, criterion, params, aux):
+    '''Automated training of model using batch gradient descent. '''
     learning_rate = 1e-3
     net = model(params)
     optimizer = t.optim.Adam(net.parameters(), lr=learning_rate)
@@ -37,7 +38,8 @@ def train_net(model, epochs, data_in, labels, classes, test_data_in, test_labels
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-        #Skipped for the sake of faster training
+            
+        ####### Section skipped for the sake of faster training #######        
         #out, _, _ = net(data_in)
         #nb_train_errors = t.sum(out.argmax(dim=1)!=(labels))
         #train_errors[epoch] = nb_train_errors
@@ -49,6 +51,7 @@ def train_net(model, epochs, data_in, labels, classes, test_data_in, test_labels
     return net, loss, train_errors, test_errors
 
 def train_rounds(num_rounds, model, epochs, criterion, params, aux, verbose=True):
+    '''Automate training over several fully independent rounds of training. Test error is collected over all rounds and average loss and standard deviation are logged. '''
     train_errors = t.Tensor(num_rounds)
     test_errors = t.Tensor(num_rounds)
     
@@ -68,6 +71,7 @@ def train_rounds(num_rounds, model, epochs, criterion, params, aux, verbose=True
     print('Test error std {:0.2f}%'.format(test_errors.std()))
 
 def evaluate_model(model, verbose=True):
+    '''Simple performance evaluator for debugging purposes. '''
     test_errors = t.Tensor(10)
     for k in range(10):
         #regenerate datasets

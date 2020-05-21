@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class ConvNet(nn.Module):
-
+'''Basic convolutional neural network structure with 2 convolution layers and 3 fully connected layers. '''
     def __init__(self, params):
         super(ConvNet, self).__init__()
 
@@ -46,6 +46,7 @@ class ConvNetWeightSharing(nn.Module):
         self.fc3 = nn.Linear(20, 2)
 
     def forward_helper(self, x):
+        '''Helper function that performs the individual forward passes of the ConvNet. '''
         # 1x14x14 -> 20x6x6
         x = self.conv1(x)
         x = F.relu(F.max_pool2d(x,2,2))
