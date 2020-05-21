@@ -45,11 +45,11 @@ class ConvNetWeightSharing(nn.Module):
         self.fc3 = nn.Linear(20, 2)
 
     def forward_helper(self, x):
-        #x14x14 -> 10x6x6
+        # 1x14x14 -> 20x6x6
         x = F.relu(F.max_pool2d(self.conv1(x),2,2))
-        # 10x6x6 -> 20x2x2
+        # 20x6x6 -> 10x2x2
         x = F.relu(F.max_pool2d(self.conv2(x),2,2))
-        # 20x2x2 -> num_hidden_1
+        # 10x2x2 -> num_hidden_1
         x = x.view(-1, 10 * 2 * 2)
 
         # num_hidden_1 -> 50
