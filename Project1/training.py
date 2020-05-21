@@ -53,7 +53,7 @@ def train_net(model, epochs, data_in, labels, classes, test_data_in, test_labels
         #('Epoch loss: {:0.2f}'.format(epoch_loss))
     return net, loss, train_errors, test_errors
 
-def train_rounds(num_rounds, model, epochs, criterion, params, aux):
+def train_rounds(num_rounds, model, epochs, criterion, params, aux, verbose=True):
     train_errors = t.Tensor(num_rounds)
     test_errors = t.Tensor(num_rounds)
     
@@ -73,9 +73,8 @@ def train_rounds(num_rounds, model, epochs, criterion, params, aux):
         
         nb_test_errors = t.sum(test_output.argmax(dim=1)!=(test_target))
         test_errors[i] = nb_test_errors
-        if True:
-            print('round {:d} - test error Net {:0.2f}% {:d}/{:d}'.format(i, (100 * nb_test_errors) // test_input.size(0),
-                                                      nb_test_errors, test_input.size(0)))
+        if verbose:
+            print('round {:d} - test error Net {:0.2f}% {:d}/{:d}'.format(i, (100 * nb_test_errors) // test_input.size(0), nb_test_errors, test_input.size(0)))
     test_errors = 100*test_errors/train_input.size(0)
     print('Test error mean {:0.2f}%'.format(test_errors.mean()))
     print('Test error std {:0.2f}%'.format(test_errors.std()))
